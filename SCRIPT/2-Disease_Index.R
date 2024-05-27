@@ -50,10 +50,10 @@ trattamenti <- unique(df_summary$Treatment)
 # Crea il grafico unico con facet_wrap
 combined_plot <- ggplot(df_summary, aes(x = Days, y = mean_class, color = Cod)) +
   geom_step(linewidth = 1) + # Usando geom_step per linee a gradino
-  labs(title = "Mean Class over Days by Species",
+  labs(title = "",
        x = "Days",
-       y = "Mean Class") +
-  ylim(0, 4) +
+       y = "Mean disease Class") +
+  ylim(0, 3) +
   facet_wrap(~ Cod, strip.position = "bottom") + # Create a plot for each species
   theme_minimal() + # Use a minimal teme
   theme(
@@ -61,7 +61,8 @@ combined_plot <- ggplot(df_summary, aes(x = Days, y = mean_class, color = Cod)) 
     axis.title.x = element_text(size = 14), # Dimensione del titolo dell'asse x
     axis.title.y = element_text(size = 14), # Dimensione del titolo dell'asse y
     axis.text = element_text(size = 12), # Dimensione dei numeri sugli assi
-    strip.text = element_text(size = 14) # Dimensione del testo dei facet
+    strip.text = element_text(size = 14), # Dimensione del testo dei facet
+    legend.position = "none"
   )
 
 # Print the combined graph

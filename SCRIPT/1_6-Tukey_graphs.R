@@ -44,10 +44,14 @@ dataframe_length$labels <- factor(dataframe_length$labels, levels = unique(dataf
 
 # Crea il boxplot con ggplot2
 boxplot_gg <- ggplot(dataframe_length, aes(x = treatment, y = length, fill = treatment)) +
-  geom_boxplot(outliers = FALSE, alpha = 0.5) +
+  geom_boxplot(outliers = TRUE, alpha = 0.5) +
   ylim(c(0, 1.1 * max(dataframe_length$length))) +
-  labs(x = "Treatment", y = "Length (cm)", title = "Boxplot") +
-  theme_minimal()
+  labs(x = "", y = "Roots length (cm)") +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1, size = 14),
+        axis.text.y = element_text(size = 14),
+        axis.title.y = element_text(size = 16))# Imposta la dimensione del testo sull'asse x a 12
 
 # Rimuovi le righe duplicate basate sul trattamento
 max_values <- dataframe_length %>%
@@ -108,10 +112,14 @@ dataframe_avgDiam$labels <- factor(dataframe_avgDiam$labels, levels = unique(dat
 
 # Crea il boxplot con colori basati sul trattamento
 boxplot_gg <- ggplot(dataframe_avgDiam, aes(x = treatment, y = avgDiam, fill = treatment)) +
-  geom_boxplot(outliers = FALSE, alpha = 0.5) +
+  geom_boxplot(outliers = TRUE, alpha = 0.5) +
   ylim(c(0, 1.1 * max(dataframe_avgDiam$avgDiam))) +
-  labs(x = "Treatment", y = "Mean Diameter (cm)", title = "Boxplot") +
-  theme_minimal() 
+  labs(x = "", y = "Mean diameter (cm)", size = 12) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1, size = 14),
+        axis.text.y = element_text(size = 14),
+        axis.title.y = element_text(size = 16))
 
 # Rimuovi le righe duplicate basate sul trattamento
 max_values <- dataframe_avgDiam %>%
@@ -172,10 +180,15 @@ dataframe_VOLT$labels <- factor(dataframe_VOLT$labels, levels = unique(dataframe
 
 # Crea il boxplot con ggplot2
 boxplot_gg <- ggplot(dataframe_VOLT, aes(x = treatment, y = rootVolume, fill = treatment)) +
-  geom_boxplot(outliers = FALSE, alpha = 0.5) +
+  geom_boxplot(outliers = TRUE, alpha = 0.5) +
   ylim(c(0, 1.1 * max(dataframe_VOLT$rootVolume))) +
-  labs(x = "Treatment", y = "Root Volume (cm3)", title = "Boxplot") +
-  theme_minimal()
+  labs(x = "", y = "Root volume (cm3)", title = "") +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1, size = 14),
+        axis.text.y = element_text(size = 14),
+        axis.title.y = element_text(size = 16))
+
 
 # Rimuovi le righe duplicate basate sul trattamento
 max_values <- dataframe_VOLT %>%
@@ -184,7 +197,7 @@ max_values <- dataframe_VOLT %>%
 
 # Aggiungi le etichette al grafico
 boxplot_gg <- boxplot_gg +
-  geom_text(data = max_values, aes(label = labels, y = max_volt + 0), 
+  geom_text(data = max_values, aes(label = labels, y = max_volt + 0.5), 
             position = position_dodge(width = 0.9), vjust = 0, size = 6, colour = "black")
 
 # Stampa il boxplot modificato con le etichette
