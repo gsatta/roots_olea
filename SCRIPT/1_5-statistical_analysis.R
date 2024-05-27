@@ -32,7 +32,7 @@ library(car)
 levene_result <- leveneTest(length ~ treatment, data = result_df)
 print(levene_result)
 
-###################
+################### avgDiam
 
 # Modello ANOVA
 modello <- aov(avgDiam ~ treatment, data = result_df)
@@ -60,11 +60,10 @@ anova_length <- aov(length ~ treatment, data = result_df)
 
 summary(anova_length)
 
-# > anova_length <- aov(length ~ treatment, data = result_df)
 # > summary(anova_length)
-# Df    Sum Sq Mean Sq F value   Pr(>F)    
-# treatment   12 111141365 9261780   5.389 1.44e-06 ***
-#   Residuals   78 134054267 1718644                     
+# Df    Sum Sq  Mean Sq F value   Pr(>F)    
+# treatment   11 111056871 10096079   6.526 2.04e-07 ***
+#   Residuals   72 111389197  1547072                     
 # ---
 #   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -72,19 +71,20 @@ anova_avgDiam <- aov(avgDiam ~ treatment, data = result_df)
 
 summary(anova_avgDiam)
 
+# > summary(anova_avgDiam)
 # Df Sum Sq Mean Sq F value   Pr(>F)    
-# treatment   12 0.3843 0.03203   9.594 3.93e-11 ***
-#   Residuals   78 0.2604 0.00334                     
+# treatment   11 0.3587 0.03260   9.143 5.55e-10 ***
+#   Residuals   72 0.2568 0.00357                     
 # ---
 #   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
 
 anova_VOLT <- aov(rootVolume ~ treatment, data = result_df)
 summary(anova_VOLT)
 
-# Df Sum Sq Mean Sq F value  Pr(>F)    
-# treatment   12  359.6  29.965     5.4 1.4e-06 ***
-#   Residuals   78  432.8   5.549                    
+# > summary(anova_VOLT)
+# Df Sum Sq Mean Sq F value   Pr(>F)    
+# treatment   11  340.9   30.99   5.419 3.28e-06 ***
+#   Residuals   72  411.8    5.72                     
 # ---
 #   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 

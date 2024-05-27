@@ -43,7 +43,7 @@ dataframe_length$labels <- LABELS[dataframe_length$treatment, 1]
 dataframe_length$labels <- factor(dataframe_length$labels, levels = unique(dataframe_length$labels))
 
 # Crea il boxplot con ggplot2
-boxplot_gg <- ggplot(dataframe_length, aes(x = treatment, y = length)) +
+boxplot_gg <- ggplot(dataframe_length, aes(x = treatment, y = length, fill = treatment)) +
   geom_boxplot(outliers = FALSE, alpha = 0.5) +
   ylim(c(0, 1.1 * max(dataframe_length$length))) +
   labs(x = "Treatment", y = "Length (cm)", title = "Boxplot") +
@@ -106,12 +106,12 @@ dataframe_avgDiam <- result_df[, c(1:2,4)]
 dataframe_avgDiam$labels <- LABELS[dataframe_avgDiam$treatment, 1]
 dataframe_avgDiam$labels <- factor(dataframe_avgDiam$labels, levels = unique(dataframe_avgDiam$labels))
 
-# Crea il boxplot con ggplot2
-boxplot_gg <- ggplot(dataframe_avgDiam, aes(x = treatment, y = avgDiam)) +
+# Crea il boxplot con colori basati sul trattamento
+boxplot_gg <- ggplot(dataframe_avgDiam, aes(x = treatment, y = avgDiam, fill = treatment)) +
   geom_boxplot(outliers = FALSE, alpha = 0.5) +
   ylim(c(0, 1.1 * max(dataframe_avgDiam$avgDiam))) +
   labs(x = "Treatment", y = "Mean Diameter (cm)", title = "Boxplot") +
-  theme_minimal()
+  theme_minimal() 
 
 # Rimuovi le righe duplicate basate sul trattamento
 max_values <- dataframe_avgDiam %>%
@@ -171,7 +171,7 @@ dataframe_VOLT$labels <- LABELS[dataframe_VOLT$treatment, 1]
 dataframe_VOLT$labels <- factor(dataframe_VOLT$labels, levels = unique(dataframe_VOLT$labels))
 
 # Crea il boxplot con ggplot2
-boxplot_gg <- ggplot(dataframe_VOLT, aes(x = treatment, y = rootVolume)) +
+boxplot_gg <- ggplot(dataframe_VOLT, aes(x = treatment, y = rootVolume, fill = treatment)) +
   geom_boxplot(outliers = FALSE, alpha = 0.5) +
   ylim(c(0, 1.1 * max(dataframe_VOLT$rootVolume))) +
   labs(x = "Treatment", y = "Root Volume (cm3)", title = "Boxplot") +
@@ -184,7 +184,7 @@ max_values <- dataframe_VOLT %>%
 
 # Aggiungi le etichette al grafico
 boxplot_gg <- boxplot_gg +
-  geom_text(data = max_values, aes(label = labels, y = max_volt + 1.5), 
+  geom_text(data = max_values, aes(label = labels, y = max_volt + 0), 
             position = position_dodge(width = 0.9), vjust = 0, size = 6, colour = "black")
 
 # Stampa il boxplot modificato con le etichette

@@ -27,8 +27,12 @@ result_df <- selected_columns %>%
 # Convert the 'plant' column to characters (strings)
 result_df$plant <- as.character(result_df$plant)
 
+# Filtra le righe dove il valore della colonna "Cod" è diverso da "PH536"
+result_df <- result_df %>% 
+  filter(treatment != "PH536")
+
 # Save the result_df dataframe in csv format
-write.csv(result_df, "./DATAFRAMES/result_df.csv", append = FALSE)
+write_csv(result_df, "./DATAFRAMES/result_df.csv", append = FALSE)
 
 # Clean the R enviroment
 rm(list=ls())
