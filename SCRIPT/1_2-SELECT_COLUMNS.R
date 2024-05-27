@@ -56,7 +56,6 @@ combined_df <- left_join(combined_df, cols_coarse_roots_SA %>% select(treatment,
 # Add the coulumn "FVOL" to combined_df
 combined_df <- left_join(combined_df, cols_fine_roots_VOL %>% select(treatment, `Sample Id`, Plant, FVOL), by = c("treatment", "Sample Id", "Plant"))
 
-
 # Select only the columns number 1:4, 19, 25, 29, 33, 32, 34, 27, 126, 127, 128, 129, 130
 selected_columns <- combined_df %>%
   select(1:3, 18, 24, 28, 125:129)
