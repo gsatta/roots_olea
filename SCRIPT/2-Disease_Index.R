@@ -4,7 +4,7 @@
 
 ################################################################################
 
-library(readxl); library(ggplot2)
+library(readxl); library(ggplot2); library(dplyr); library(readr); library(ggforce)
 
 dataframe <- readxl::read_excel("./DISEASE_INDEX/disease_index_0.xlsx")
 
@@ -55,14 +55,16 @@ combined_plot <- ggplot(df_summary, aes(x = Days, y = mean_class, color = Cod)) 
        y = "Mean disease Class") +
   ylim(0, 3) +
   facet_wrap(~ Cod, strip.position = "bottom") + # Create a plot for each species
-  theme_minimal() + # Use a minimal teme
+  theme_minimal() + # Use a minimal theme
   theme(
     plot.title = element_text(size = 18, face = "bold"), # Dimensione del titolo
     axis.title.x = element_text(size = 14), # Dimensione del titolo dell'asse x
     axis.title.y = element_text(size = 14), # Dimensione del titolo dell'asse y
-    axis.text = element_text(size = 12), # Dimensione dei numeri sugli assi
+    axis.text = element_text(size = 14), # Dimensione dei numeri sugli assi
     strip.text = element_text(size = 14), # Dimensione del testo dei facet
-    legend.position = "none"
+    legend.position = "none",
+    panel.border = element_rect(colour = "black", fill = NA, size = 0.6), # Cornice attorno ad ogni grafico
+    panel.spacing = unit(0.5, "lines") # Spaziatura tra i pannelli
   )
 
 # Print the combined graph
