@@ -6,33 +6,60 @@
 
 library(readxl); library(ggplot2); library(dplyr); library(readr); library(ggforce)
 
-dataframe <- readxl::read_excel("./DISEASE_INDEX/disease_index_0.xlsx")
+dataframe <- readxl::read_excel("./DISEASE_INDEX/disease_index_1.xlsx")
 
 # Convertire le colonne dalla quinta alla trentaduesima in numerico
 dataframe <- dataframe %>%
   mutate(across(5:32, as.numeric))
 
-# Elimina le colonne dalla 5 alla 12
-dataframe <- dataframe[, -c(5:12)]
+# Prima parte del dataframe (dalla riga 1 alla riga 49)
+first <- dataframe[1:49, ]
+
+first <- first[, -c(33:39)]
+
+# Seconda parte del dataframe (dalla riga 50 in poi)
+second <- dataframe[50:nrow(dataframe), ]
+
+# # Elimina le colonne dalla 5 alla 12
+second <- second[, -c(5:12)]
 
 # Trasforma il dataframe da wide a long
-df_long <- tidyr::pivot_longer(dataframe, 
-                               cols = starts_with("09-02-2024"):starts_with("19-04-2024"),
+df_long_first <- tidyr::pivot_longer(first, 
+                               cols = starts_with("10-01-2024"):starts_with("19-04-2024"),
                                names_to = "Date",
                                values_to = "Class")
 
 # Filtra le righe dove il valore della colonna "Cod" è diverso da "PH536"
-df_long <- df_long %>% 
-  filter(Cod != "PH536")
+df_long_first <- df_long_first %>% 
+  filter(Cod != "PH 536")
 
 # Converti la colonna Date in formato data
-df_long$Date <- as.Date(df_long$Date, format = "%d-%m-%Y")
+df_long_first$Date <- as.Date(df_long_first$Date, format = "%d-%m-%Y")
 
 # Converti le date in numero di giorni
-df_long$Days <- as.numeric(df_long$Date - min(df_long$Date))
+df_long_first$Days <- as.numeric(df_long_first$Date - min(df_long_first$Date))
+
+# Trasforma il dataframe da wide a long
+df_long_second <- tidyr::pivot_longer(second, 
+                                     cols = starts_with("09-02-2024"):starts_with("13-05-2024"),
+                                     names_to = "Date",
+                                     values_to = "Class")
+
+# Filtra le righe dove il valore della colonna "Cod" è diverso da "PH536"
+df_long_second <- df_long_second %>% 
+  filter(Cod != "PH 536")
+
+# Converti la colonna Date in formato data
+df_long_second$Date <- as.Date(df_long_second$Date, format = "%d-%m-%Y")
+
+# Converti le date in numero di giorni
+df_long_second$Days <- as.numeric(df_long_second$Date - min(df_long_second$Date))
+
+# Unione dei due dataframe per righe
+df_combined <- bind_rows(df_long_first, df_long_second)
 
 # Calcola la media di Class per ogni combinazione di Inoculum, Treatment e Days
-df_summary <- df_long %>%
+df_summary <- df_combined %>%
   group_by(Cod, Treatment, Days) %>%
   summarize(mean_class = mean(Class)) %>%
   ungroup()
@@ -72,3 +99,4 @@ print(combined_plot)
 
 # Save the plot as jpg file
 ggsave("./GRAPHS/mean_DI.jpg", combined_plot, width = 16, height = 12, dpi = 700)
+
