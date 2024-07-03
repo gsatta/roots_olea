@@ -6,7 +6,7 @@
 library(readr)
 
 # Load the file
-result_df  <- read_csv("./DATAFRAMES/result_df.csv")
+result_df  <- read_csv("./DATAFRAMES/result_df_Weight.csv")
 result_df$...1 <- NULL
 
 result_df$treatment <- factor(result_df$treatment)
@@ -53,6 +53,27 @@ library(car)
 levene_result <- leveneTest(avgDiam ~ treatment, data = result_df)
 print(levene_result)
 
+################### weight
+
+# Modello ANOVA
+modello <- aov(weight ~ treatment, data = result_df)
+
+# Residui del modello
+residui <- residuals(modello)
+
+# Test di Shapiro-Wilk per la normalità
+shapiro_result <- shapiro.test(residui)
+print(shapiro_result)
+
+# Q-Q plot
+qqnorm(residui)
+qqline(residui, col = "red")
+
+# Test di Levene per l'omogeneità delle varianze
+library(car)
+levene_result <- leveneTest(weight ~ treatment, data = result_df)
+print(levene_result)
+
 ################################################################################
 
 # Modello ANOVA
@@ -87,6 +108,17 @@ summary(anova_VOLT)
 #   Residuals   72  411.8    5.72                     
 # ---
 #   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+anova_weight <- aov(weight ~ treatment, data = result_df)
+summary(anova_weight)
+
+# # > summary(anova_weight)
+# Df Sum Sq Mean Sq F value Pr(>F)  
+# treatment   11  64.58   5.871   2.163  0.026 *
+#   Residuals   72 195.40   2.714                 
+# ---
+#   Signif. codes:  
+#   0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 ################################################################################
 
@@ -237,6 +269,21 @@ file_path_plot <- "./GRAPHS/tukey_VOLT.png"
 
 # Save the grid as a PNG file.
 ggsave(file_path_plot, plot_tukey_VOLT, width = 16, height = 12, dpi = 700)
+
+################################################################################
+
+Tukey_weight <- TukeyHSD(anova_weight, conf.level=0.95)
+
+Tukey_weight
+
+# Esegui la funzione GGTukey.2 con i dati Tukey_length
+plot_tukey_weight <- GGTukey.2(Tukey_weight)
+
+# Specifica il percorso del file
+file_path_plot <- "./GRAPHS/tukey_weight.png"
+
+# Save the grid as a PNG file.
+ggsave(file_path_plot, plot_tukey_weight, width = 16, height = 12, dpi = 700)
 
 
 

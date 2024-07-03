@@ -71,3 +71,5 @@ write.csv(selected_columns, "./DATAFRAMES/selected_columns.csv", append = FALSE)
 
 # Clean the R enviroment
 rm(list=ls())
+
+

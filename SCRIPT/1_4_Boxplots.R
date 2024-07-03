@@ -4,7 +4,7 @@
 
 ################################################################################
 library(ggplot2); library(gridExtra); library(grid); library(readr)
-result_df  <- read_csv("./DATAFRAMES/result_df.csv")
+result_df  <- read_csv("./DATAFRAMES/result_df_Weight.csv")
 
 result_df$...1 <- NULL
 
@@ -31,7 +31,7 @@ data$treatment <- factor(data$treatment)
 # Creazione della lista di grafici
 plots <- list()
 
-variables <- colnames(data[,3:10])
+variables <- colnames(data[,3:11])
 
 # Ciclo for per creare i grafici
 for (var in variables) {
@@ -46,7 +46,8 @@ for (var in variables) {
                     "CRL" = "Coarse Root Length (cm)", #
                     "FRS" = "Fine Root Surface (cm2)", #
                     "CRS" = "Coarse Root Surface (cm2)", #
-                    "FVOL" = "Fine Root Volume (cm3)")) + # 
+                    "FVOL" = "Fine Root Volume (cm3)", # 
+                    "weight" = "Roots dry weight (g)")) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10)) 
     # scale_fill_manual(values = colors) +
     # theme(legend.position = "none")

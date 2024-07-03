@@ -35,3 +35,13 @@ combined_df$...1 <- NULL
 
 # Ripulisci l'enviroment di R
 rm(list=ls())
+
+####################   weight data    ###############################
+
+# Load the weight data
+weigth <- read_excel("./DATAFRAMES/weigth_0.xlsx", sheet = "weigth")
+
+write_csv(weigth, "./DATAFRAMES/weigth.csv")
+
+# Clean the R environment
+rm(list=ls())

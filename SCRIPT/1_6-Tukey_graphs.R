@@ -210,8 +210,74 @@ file_path <- "./GRAPHS/boxPlots_tukey_volt.jpg"
 ggsave(file_path, boxplot_gg, width = 16, height = 12, dpi = 700)
 
 
+############################### weight #########################################
+
+# Estrai i valori p dai risultati del test di Tukey
+p_values <- Tukey_weight$treatment[, "p adj"]
+
+# Determina i livelli di significatività
+significance_levels <- ifelse(p_values < 0.001, "***", 
+                              ifelse(p_values < 0.01, "**", 
+                                     ifelse(p_values < 0.05, "*", "")))
+
+# Crea una mappa tra le comparazioni e i simboli di significatività
+comparison_names <- rownames(Tukey_weight$treatment)
+
+significance_map <- data.frame(comparison = comparison_names, significance = significance_levels)
+
+# Funzione per generare le etichette dei trattamenti
+generate_treatment_labels <- function(TUKEY, variable) {
+  # Estrai i livelli e le etichette dal test post-hoc di Tukey
+  Tukey_levels <- TUKEY[[variable]][, 4]
+  Tukey_labels <- data.frame(multcompLetters(Tukey_levels)['Letters'])
+  
+  # Ordina le etichette per allinearle al boxplot
+  Tukey_labels$treatment <- rownames(Tukey_labels)
+  Tukey_labels <- Tukey_labels[order(Tukey_labels$treatment), ]
+  
+  return(Tukey_labels)
+}
+
+# Applica la funzione al dataset
+LABELS <- generate_treatment_labels(Tukey_weight, "treatment")
+
+# Crea il dataframe principale
+dataframe_weight <- result_df[, c(1:2,11)]
+
+# Aggiungi le etichette al dataframe
+dataframe_weight$labels <- LABELS[dataframe_weight$treatment, 1]
+dataframe_weight$labels <- factor(dataframe_weight$labels, levels = unique(dataframe_weight$labels))
+
+# Crea il boxplot con ggplot2
+boxplot_gg <- ggplot(dataframe_weight, aes(x = treatment, y = weight, fill = treatment)) +
+  geom_boxplot(outliers = TRUE, alpha = 0.5) +
+  ylim(c(0, 1.1 * max(dataframe_weight$weight))) +
+  labs(x = "", y = "Roots dry weight (g)", title = "") +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1, size = 14),
+        axis.text.y = element_text(size = 14),
+        axis.title.y = element_text(size = 16))
 
 
+# Rimuovi le righe duplicate basate sul trattamento
+max_values <- dataframe_weight %>%
+  group_by(treatment) %>%
+  summarize(max_weight = max(weight[weight <= quantile(weight, 0.75) + 1.5 * IQR(weight)]), labels = first(labels))
+
+# Aggiungi le etichette al grafico
+boxplot_gg <- boxplot_gg +
+  geom_text(data = max_values, aes(label = labels, y = max_weight + 0.5), 
+            position = position_dodge(width = 0.9), vjust = 0, size = 6, colour = "black")
+
+# Stampa il boxplot modificato con le etichette
+print(boxplot_gg)
+
+# Specifica il percorso per salvare l'immagine
+file_path <- "./GRAPHS/boxPlots_tukey_volt.jpg"
+
+# Salva il boxplot come file PNG
+ggsave(file_path, boxplot_gg, width = 16, height = 12, dpi = 700)
 
 
 
