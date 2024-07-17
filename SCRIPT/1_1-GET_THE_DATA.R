@@ -24,6 +24,9 @@ combined_df$treatment <- sapply(strsplit(combined_df$`Sample Id`, "_"), `[`, 1)
 combined_df <- combined_df %>%
   select(`Sample Id`, treatment, Plant, everything())
 
+# Filter the dataframe to delete the rows with "PH536" in the "treatment" column
+combined_df <- combined_df %>% filter(treatment != "PH536")
+
 # Store the dataframe in csv format
 write.csv(combined_df, "./DATAFRAMES/combined_df.csv", append = FALSE)
 
@@ -40,6 +43,9 @@ rm(list=ls())
 
 # Load the weight data
 weigth <- read_excel("./DATAFRAMES/weigth_0.xlsx", sheet = "weigth")
+
+# Filter the dataframe to delete the rows with "PH536" in the "treatment" column
+weigth <- weigth %>% filter(treatment != "PH536")
 
 write_csv(weigth, "./DATAFRAMES/weigth.csv")
 

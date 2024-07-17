@@ -278,15 +278,3 @@ file_path <- "./GRAPHS/boxPlots_tukey_volt.jpg"
 
 # Salva il boxplot come file PNG
 ggsave(file_path, boxplot_gg, width = 16, height = 12, dpi = 700)
-
-
-
-
-
-
-
-
-
-
-
-
